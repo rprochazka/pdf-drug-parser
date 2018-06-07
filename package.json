@@ -1,0 +1,20 @@
+{
+  "name": "drug-pdf-parser",
+  "version": "1.0.0",
+  "description": "parses given pdf file with drug instructions and extract desired part",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc & node ./index.js ./data/input/betaloc-pil.pdf"
+  },
+  "author": "Radek Prochazka",
+  "license": "ISC",
+  "dependencies": {
+    "pdf-parse": "^1.0.8",
+    "pdf2json": "^1.1.7",
+    "pdftohtmljs": "^0.5.1"
+  },
+  "devDependencies": {
+    "@types/node": "^10.3.1"
+  }
+}
