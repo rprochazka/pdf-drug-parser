@@ -14,7 +14,7 @@
                 "${workspaceFolder}/dist/**/*.js"
             ],
             "args": [
-                "./data/input/betaloc-pil.pdf"
+                "./data/input"
             ],
         }
     ]

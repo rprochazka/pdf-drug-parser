@@ -1,4 +1,4 @@
-let fs = require('fs');
+let fs = require('mz/fs');
 
 const outputDir = 'data/output';
 
@@ -15,6 +15,17 @@ class FileHelper {
             });
         });
     }
+
+    async readDir(directory: string): Promise<string[]> {
+        try {
+            const files = await fs.readdir(directory);
+            return files;
+        }
+        catch (err) {
+            console.error(err);
+            return null;
+        }
+    };
 }
 
 export = FileHelper

@@ -26,6 +26,7 @@ function formatWholeTxt(txtContent) {
     return textParser.removePageBreaks()
         .markBoldSectionTitles()
         .markBoldTitles()
+        .replaceLineEnds()
         .getText();
 
 }
@@ -42,11 +43,13 @@ async function extractPart(text) {
     })
 }
 
-async function run(pdfFilePath) {
+async function processFile(pdfFilePath) {
     console.log(`started parsing ${pdfFilePath}`);
     const fileName = pdfFilePath.split('/').slice(-1)[0];
     const fileHelper = new FileHelper();
+
     try {
+        fileHelper.readDir('data/input');
         const txtContent = await parsePdf(pdfFilePath);
         const formattedTxt = formatWholeTxt(txtContent);
         await fileHelper.saveFile(formattedTxt, fileName.replace('pdf', 'txt'));
@@ -60,6 +63,15 @@ async function run(pdfFilePath) {
     }
 
     console.log('parsing finished');
+}
+
+async function run(sourceDir) {
+    const fileHelper = new FileHelper();
+    const files = await fileHelper.readDir(sourceDir);
+    files.forEach(async file => {
+        const filePath = `${sourceDir}/${file}`;
+        await processFile(filePath);
+    });
 }
 
 run(args[0])

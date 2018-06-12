@@ -31,6 +31,10 @@ class TextParser {
         this.text = headerText + boldSectionsText;
         return this;
     }
+    replaceLineEnds() {
+        this.text = this.text.replace(/[\r\n]+/g, "<br/>");
+        return this;
+    }
     getText() {
         return this.text;
     }

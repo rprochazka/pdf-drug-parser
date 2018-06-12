@@ -68,3 +68,6 @@ typings/
 
 # Data files
 data
+
+# dist
+dist

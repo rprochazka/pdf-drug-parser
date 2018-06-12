@@ -38,6 +38,11 @@ class TextParser {
         return this;
     }
 
+    replaceLineEnds() {
+        this.text = this.text.replace(/[\r\n]+/g, "<br/>")
+        return this;
+    }
+
     getText(): string {
         return this.text;
     }

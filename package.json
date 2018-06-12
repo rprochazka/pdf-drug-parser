@@ -5,11 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc & node ./index.js ./data/input/betaloc-pil.pdf"
+    "start": "tsc & node ./index.js ./data/input"
   },
   "author": "Radek Prochazka",
   "license": "ISC",
   "dependencies": {
+    "jquery": "^3.3.1",
+    "mz": "^2.7.0",
     "pdf-parse": "^1.0.8",
     "pdf2json": "^1.1.7",
     "pdftohtmljs": "^0.5.1"
