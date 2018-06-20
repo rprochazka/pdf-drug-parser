@@ -10,18 +10,40 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 let fs = require('mz/fs');
 const outputDir = 'data/output';
 class FileHelper {
-    saveFile(content, targetPath) {
-        return new Promise((resolve, reject) => {
-            const target = `${outputDir}/${targetPath}`;
-            fs.writeFile(`${target}`, content, (error) => {
-                if (error) {
-                    reject('error in data ready error handler');
-                }
-                resolve();
-            });
+    saveFileAsync(content, targetPath) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield fs.writeFile(`${targetPath}`, content);
+            }
+            catch (error) {
+                console.error(error);
+                throw error;
+            }
+            // return new Promise((resolve, reject) => {
+            //     const target = `${outputDir}/${targetPath}`;
+            //     fs.writeFile(`${target}`, content, (error) => {
+            //         if (error) {
+            //             reject('error in data ready error handler');
+            //         }
+            //         resolve();
+            //     });
+            // });
         });
     }
-    readDir(directory) {
+    readFileAsync(filePath) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const file = yield fs.readFile(filePath);
+                return file.toString('utf8');
+            }
+            catch (err) {
+                console.error(err);
+                throw err;
+            }
+        });
+    }
+    ;
+    readDirAsync(directory) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const files = yield fs.readdir(directory);
