@@ -27,6 +27,7 @@ async function parsePdf(fileName) {
 function formatWholeTxt(txtContent) {
     const textParser = new TextParser(txtContent);
     return textParser.removePageBreaks()
+        .removeScrewedTableData()
         .markBoldSectionTitles()
         .markBoldTitles()
         .replaceLineEnds()
@@ -37,13 +38,19 @@ function formatWholeTxt(txtContent) {
 async function extractPart(text) {
     return new Promise((resolve, reject) => {
         const textParser = new TextParser(text);
-        const extract = textParser
-            .extractSection(2)
-            .removePageBreaks()
-            .markBoldTitles()
-            .replaceLineEnds()
-            .getText();
-        resolve(extract);
+        try {
+            const extract = textParser
+                .extractSection(2)
+                .removePageBreaks()
+                .removeScrewedTableData()
+                .markBoldTitles()
+                .replaceLineEnds()
+                .getText();
+            resolve(extract);
+        } catch (error) {
+            console.error(error);
+            reject(error);
+        }
     })
 }
 
@@ -94,11 +101,20 @@ async function run(sourceDir) {
     const fileHelper = new FileHelper();
     const files = await fileHelper.readDirAsync(sourceDir);
     var tasks = [];
-    files.forEach(file => {
+    const chunkSize = 50;
+    for (let index = 0; index < files.length; index++) {
+        const file = files[index];
         const filePath = `${sourceDir}/${file}`;
         tasks.push(processFile(filePath));
-    });
+        if (index % chunkSize === 0) {
+            await Promise.all(tasks);
+            tasks = [];
+        }
+
+    }
     await Promise.all(tasks);
+    tasks = [];
+
     console.log('App finished');
     console.timeEnd('App counter');
 

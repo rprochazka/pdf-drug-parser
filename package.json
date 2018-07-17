@@ -10,6 +10,8 @@
   "author": "Radek Prochazka",
   "license": "ISC",
   "dependencies": {
+    "dropbox": "^4.0.7",
+    "isomorphic-fetch": "^2.2.1",
     "jquery": "^3.3.1",
     "mz": "^2.7.0",
     "pdf-parse": "^1.0.8",
