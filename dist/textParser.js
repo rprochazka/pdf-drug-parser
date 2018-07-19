@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const util_1 = require("util");
 class TextParser {
     constructor(initialText) {
@@ -73,4 +74,5 @@ class TextParser {
         return this.text;
     }
 }
-module.exports = TextParser;
+exports.default = TextParser;
+// export = TextParser
