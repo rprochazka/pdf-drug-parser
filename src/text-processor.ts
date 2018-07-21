@@ -30,10 +30,12 @@ export default class TextProcessor {
 
             //process sections
             const sections: number[] = [1, 2, 3, 4];
-            sections.forEach(async section => await this.processSection(this.textParser.getSection(section), fileName, section));
+            var tasks = sections.map(s => this.processSection(this.textParser.getSection(s), fileName, s));
+            // sections.forEach(async section => await this.processSection(this.textParser.getSection(section), fileName, section));
+            await Promise.all(tasks);
 
         } catch (error) {
-            console.error(error);
+            console.error(`Error processing file ${pdfFilePath}:  ${error}`);
         }
 
         console.log(`finished processing ${pdfFilePath}`);

@@ -46,11 +46,16 @@ export default class TextParser {
     }
 
     private removeScrewedTableData(): void {
-        const matchedText = this.text.match(/.*[䙲攀欀瘀敮挀攠ㄠⴀ㌠爀潫礀ⴀ⁫最ㄠ洀最㌠ⴀ㔠氀整ᆬⴀᄅ⁫最洀最㔠ⴀ㤠氀整ⴀ代⁫最水㔠洀最㤠ⴀᄄ⁬整㌰ⴀ㘰最㔠洀最ᆬⴀᄄ⁬整慤‵‵〠欀最⁭最].*/gm);
+        var matchedText = this.text.match(/[^\r\n]+[䙲攀欀瘀敮挀攠ㄠⴀ㌠爀潫礀ⴀ⁫最ㄠ洀最㌠ⴀ㔠氀整ᆬⴀᄅ⁫最洀最㔠ⴀ㤠氀整ⴀ代⁫最水㔠洀最㤠ⴀᄄ⁬整㌰ⴀ㘰最㔠洀最ᆬⴀᄄ⁬整慤‵‵〠欀最⁭最䄀獩‵ⴀ㜠稀琀慢氀整愠瘀⁣礀欀氀甀樀攀摥渠摥渀⤀䄀獩琀慢䄀湯樀攀瘀樀攀摥渠摥桯搮欀䄀獩䙯硩稀‱攀稀攀稀扬椀獴爀甀扬椀獴爀甮灯㔰浬][^\r\n]+/gm);
         if (matchedText) {
-            const pattern = `[^\n]+([\r\n ]){2,}[^\n]+\n${matchedText.join('\r\n')}`;
+            const escapedMatchedText = this.escapeRegexPattern(matchedText.join('\r\n'));
+            const pattern = `[^\n]+([\r\n ]){2,}[^\n]+\n${escapedMatchedText}`;
             this.text = this.text.replace(new RegExp(pattern, 'gs'), '');
         }
+    }
+
+    private escapeRegexPattern(input: string): string {
+        return input.replace(/([()+.])/g, '\\$1');
     }
 
     private getSectionTitle(section): string {
@@ -59,7 +64,7 @@ export default class TextParser {
         var sectionTitle = matches && isArray(matches) ? matches[0] : '';
         if (sectionTitle) {
             const contentPattern = sectionTitle.replace('+', '\\+').replace(/[\r\n\t ]+/g, '\\W+')
-            const matches = this.text.match(new RegExp(contentPattern, 'g'));
+            const matches = this.text.match(new RegExp(`^\\W+${contentPattern}`, 'gm'));
             return matches && isArray(matches) && matches.length > 1 ? matches[1] : '';
         }
         return sectionTitle;
